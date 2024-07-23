@@ -7,7 +7,7 @@ const configuration = {
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
 };
 
-socket = io('https://65.1.116.84/socket.io/');
+socket = io('https://vcip-poc.test.paywithring.com:3000');
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
 
