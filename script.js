@@ -8,6 +8,9 @@ const configuration = {
 };
 
 socket = io('https://65.1.116.84/socket.io/');
+const canvas = document.createElement('canvas');
+const context = canvas.getContext('2d');
+
 
 async function startCall() {
     try {
@@ -23,6 +26,7 @@ async function startCall() {
         peerConnection.ontrack = event => {
             if (event.streams && event.streams[0]) {
                 document.getElementById('remoteVideo').srcObject = event.streams[0];
+                startCombinedRecording();
             }
         };
 
@@ -37,8 +41,50 @@ async function startCall() {
         console.error('Error starting call:', error);
     }
 }
+function startCombinedRecording() {
+    canvas.width = localVideo.videoWidth * 2;
+    canvas.height = localVideo.videoHeight;
+
+    combinedMediaRecorder = new MediaRecorder(canvas.captureStream(), { mimeType: 'video/webm; codecs=vp9' });
+
+    combinedMediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+        }
+    };
+
+    combinedMediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        a.href = url;
+        a.download = 'combined-video.webm';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+
+    combinedMediaRecorder.start();
+    console.log('Combined recording started');
+
+    requestAnimationFrame(drawVideosToCanvas);
+}
+
+function drawVideosToCanvas() {
+    if (localVideo.readyState >= 2 && remoteVideo.readyState >= 2) {
+        context.drawImage(localVideo, 0, 0, canvas.width / 2, canvas.height);
+        context.drawImage(remoteVideo, canvas.width / 2, 0, canvas.width / 2, canvas.height);
+    }
+    requestAnimationFrame(drawVideosToCanvas);
+}
 
 function endCall() {
+    
+    if (combinedMediaRecorder && combinedMediaRecorder.state !== 'inactive') {
+            combinedMediaRecorder.stop();
+        }
+
     if (peerConnection) {
         peerConnection.close();
     }
