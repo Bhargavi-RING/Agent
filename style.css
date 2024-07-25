@@ -90,7 +90,7 @@ video {
 
 #startCall { background-color: #2196F3; }
 #endCall { background-color: #f44336; }
-#startRecording, #stopRecording, #downloadRecording { background-color: #000000; }
+#capture { background-color: #000000; }
 
 
 @media (max-width: 768px) {
