@@ -51,7 +51,6 @@ video {
     bottom: 20px;
     right: 20px;
     width: 30%;
-    max-width: 200px;
     border: 2px solid #fff;
     border-radius: 8px;
     overflow: hidden;
