@@ -1,7 +1,5 @@
 
 let localStream;
-let localVideo=document.getElementById('localVideo');
-let remoteVideo = document.getElementById('remoteVideo');
 let peerConnection;
 let socket;
 let roomId = 'default-room';
@@ -21,7 +19,7 @@ const context = canvas.getContext('2d');
 async function startCall() {
     try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        localVideo.srcObject = localStream;
+        document.getElementById('localVideo').srcObject = localStream;
 
         peerConnection = new RTCPeerConnection(configuration);
 
@@ -31,7 +29,7 @@ async function startCall() {
 
         peerConnection.ontrack = event => {
             if (event.streams && event.streams[0]) {
-               remoteVideo.srcObject = event.streams[0];
+               document.getElementById('remoteVideo').srcObject = event.streams[0];
                 startCombinedRecording();
             }
         };
@@ -48,7 +46,7 @@ async function startCall() {
     }
 }
 function startCombinedRecording() {
-    
+    localVideo=document.getElementById('localVideo')
     canvas.width = localVideo.videoWidth * 2;
     canvas.height = localVideo.videoHeight;
 
@@ -79,6 +77,8 @@ function startCombinedRecording() {
 }
 
 function drawVideosToCanvas() {
+     localVideo=document.getElementById('localVideo')
+     remoteVideo=document.getElementById('remoteVideo')
     if (localVideo.readyState >= 2 && remoteVideo.readyState >= 2) {
         context.drawImage(localVideo, 0, 0, canvas.width / 2, canvas.height);
         context.drawImage(remoteVideo, canvas.width / 2, 0, canvas.width / 2, canvas.height);
