@@ -95,11 +95,6 @@ function endCall() {
     document.getElementById('remoteVideo').srcObject = null;
 }
 
-// socket.on('user-connected', async () => {
-//     const offer = await peerConnection.createOffer();
-//     await peerConnection.setLocalDescription(offer);
-//     socket.emit('offer', offer, roomId);
-// });
 
 socket.on('offer', async (offer) => {
     await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
@@ -108,9 +103,6 @@ socket.on('offer', async (offer) => {
     socket.emit('answer', answer, roomId);
 });
 
-// socket.on('answer', async (answer) => {
-//     await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-// });
 
 socket.on('ice-candidate', async (candidate) => {
     try {
