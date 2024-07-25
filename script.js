@@ -1,7 +1,13 @@
+const localVideo = document.getElementById('localVideo');
+const remoteVideo = document.getElementById('remoteVideo');
+
 let localStream;
 let peerConnection;
 let socket;
 let roomId = 'default-room';
+
+let combinedMediaRecorder;
+let recordedChunks = [];
 
 const configuration = {
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
@@ -42,6 +48,7 @@ async function startCall() {
     }
 }
 function startCombinedRecording() {
+    
     canvas.width = localVideo.videoWidth * 2;
     canvas.height = localVideo.videoHeight;
 
