@@ -46,7 +46,7 @@ async function startCall() {
     }
 }
 function startCombinedRecording() {
-    localVideo=document.getElementById('localVideo')
+    // localVideo=document.getElementById('localVideo')
     canvas.width = localVideo.videoWidth * 2;
     canvas.height = localVideo.videoHeight;
 
@@ -77,8 +77,8 @@ function startCombinedRecording() {
 }
 
 function drawVideosToCanvas() {
-     localVideo=document.getElementById('localVideo')
-     remoteVideo=document.getElementById('remoteVideo')
+     // localVideo=document.getElementById('localVideo')
+     // remoteVideo=document.getElementById('remoteVideo')
     if (localVideo.readyState >= 2 && remoteVideo.readyState >= 2) {
         context.drawImage(localVideo, 0, 0, canvas.width / 2, canvas.height);
         context.drawImage(remoteVideo, canvas.width / 2, 0, canvas.width / 2, canvas.height);
