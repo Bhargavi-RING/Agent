@@ -8,7 +8,12 @@ let combinedMediaRecorder;
 let recordedChunks = [];
 
 const configuration = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+    iceServers: [{ urls: 'stun:stun.l.google.com:19302' },
+                
+    {urls: 'turn:vcip-poc.test.paywithring.com/turn',
+      username: 'VcipPOC',
+      credential: 'TrY123'
+    }]
 };
 
 socket = io('https://vcip-poc.test.paywithring.com');
