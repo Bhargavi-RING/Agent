@@ -65,7 +65,7 @@ function startCombinedRecording() {
         document.body.appendChild(a);
         a.style = 'display: none';
         a.href = url;
-        a.download = 'combined-video.webm';
+        a.download = 'recording.webm';
         a.click();
         window.URL.revokeObjectURL(url);
     };
@@ -102,6 +102,26 @@ function endCall() {
     document.getElementById('remoteVideo').srcObject = null;
 }
 
+function capture_selfie() {
+
+    const canvas = document.createElement('canvas');
+    const video = document.getElementById('remoteVideo') ;
+    if (video) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        const image = canvas.toDataURL('image/jpeg');
+        
+        
+        // const link = document.createElement('a');
+        // link.href = image;
+        // link.download = 'selfie.jpg';
+        // link.click();
+    } else {
+        console.warn('Local video element not found. Cannot capture selfie.');
+    }
+}
+
 
 socket.on('offer', async (offer) => {
     await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
@@ -122,4 +142,6 @@ socket.on('ice-candidate', async (candidate) => {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('startCall').addEventListener('click', startCall);
     document.getElementById('endCall').addEventListener('click', endCall);
+    document.getElementById('capture').addEventListener('click', capture_selfie);
+
 });
