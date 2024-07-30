@@ -91,6 +91,26 @@ function drawVideosToCanvas() {
     requestAnimationFrame(drawVideosToCanvas);
 }
 
+function capture_selfie() {
+
+    const canvas = document.createElement('canvas');
+    const video = document.getElementById('remoteVideo') ;
+    if (video) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        const image = canvas.toDataURL('image/jpeg');
+
+        
+        // const link = document.createElement('a');
+        // link.href = image;
+        // link.download = 'selfie.jpg';
+        // link.click();
+    } else {
+        console.warn('Local video element not found. Cannot capture selfie.');
+    }
+}
+
 function endCall() {
     
     if (combinedMediaRecorder && combinedMediaRecorder.state !== 'inactive') {
@@ -107,25 +127,7 @@ function endCall() {
     document.getElementById('remoteVideo').srcObject = null;
 }
 
-function capture_selfie() {
 
-    const canvas = document.createElement('canvas');
-    const video = document.getElementById('remoteVideo') ;
-    if (video) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
-        const image = canvas.toDataURL('image/jpeg');
-        
-        
-        // const link = document.createElement('a');
-        // link.href = image;
-        // link.download = 'selfie.jpg';
-        // link.click();
-    } else {
-        console.warn('Local video element not found. Cannot capture selfie.');
-    }
-}
 
 
 socket.on('offer', async (offer) => {
