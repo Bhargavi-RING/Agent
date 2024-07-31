@@ -10,7 +10,7 @@ let recordedChunks = [];
 const configuration = {
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' },
                 
-    {urls: 'turn:vcip-poc.test.paywithring.com:3478',
+    {urls: 'turn:vcip-poc.test.paywithring.com',
       username: 'VcipPOC',
       credential: 'TrY123'
     }]
