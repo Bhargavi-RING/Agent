@@ -89,7 +89,7 @@ video {
 
 #startCall { background-color: #2196F3; }
 #endCall { background-color: #f44336; }
-#capture { background-color: #000000; }
+#capture,#captureSelfie{ background-color: #000000; }
 
 
 @media (max-width: 768px) {
