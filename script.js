@@ -91,23 +91,53 @@ function drawVideosToCanvas() {
     requestAnimationFrame(drawVideosToCanvas);
 }
 
-function capture_selfie() {
-
+async function capture_pan(flag) {
     const canvas = document.createElement('canvas');
-    const video = document.getElementById('remoteVideo') ;
+    const video = document.getElementById('remoteVideo');
     if (video) {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         canvas.getContext('2d').drawImage(video, 0, 0);
-        const image = canvas.toDataURL('image/jpeg');
 
+        let endpoint="";
+        if (flag==="pan"){
+            endpoint="process_pan";
+        }
+        if(flag==="selfie"){
+            endpoint="face_match";
+        }
+
+        canvas.toBlob(async (blob) => {
+
+            if (!blob) {
+                console.error('Failed to create blob from canvas.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', blob, 'image.jpg');
         
-        // const link = document.createElement('a');
-        // link.href = image;
-        // link.download = 'selfie.jpg';
-        // link.click();
+            
+            try {
+                const response = await fetch('http://localhost:5000/process_pan', {
+                    method: 'POST',
+                    body: formData,
+                    mode:'cors'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('API Response:', result);
+                displayResult(result);
+            } catch (error) {
+                console.error('Error sending image to API:', error);
+            }
+        }, 'image/jpeg');
     } else {
-        console.warn('Local video element not found. Cannot capture selfie.');
+        console.warn('Remote video element not found. Cannot capture selfie.');
     }
 }
 
@@ -147,8 +177,33 @@ socket.on('ice-candidate', async (candidate) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('startCall').addEventListener('click', startCall);
-    document.getElementById('endCall').addEventListener('click', endCall);
-    document.getElementById('capture').addEventListener('click', capture_selfie);
+    const startCall = document.getElementById('startCall');
+    const endCall = document.getElementById('endCall') ;
+    const capture = document.getElementById('capture');
+    const selfieCapture=document.getElementById('captureSelfie')
+    
+    if (startCall) {
+        startCall.addEventListener('click', joinCall);
+    } else {
+        console.warn('Join call button not found. Call cannot be joined manually.');
+    }
+    
+    if (endCall) {
+        endCall.addEventListener('click', endCall);
+    } else {
+        console.warn('End call button not found. Call cannot be ended manually.');
+    }
+    
+    if (capture) {
+        capture.addEventListener('click', () => capture_pan("pan"));
+    } else {
+        console.warn('Capture selfie button not found. Selfie cannot be captured manually.');
+    }
 
+    if (selfieCapture) {
+        selfieCapture.addEventListener('click', () => capture_pan("selfie"));
+    } else {
+        console.warn('End call button not found. Call cannot be ended manually.');
+    }
+    
 });
