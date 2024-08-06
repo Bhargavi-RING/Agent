@@ -119,7 +119,7 @@ async function capture_pan(flag) {
         
             
             try {
-                const response = await fetch('http://localhost:5000/process_pan', {
+                const response = await fetch(`https://vpn.paywithring.com/${endpoint}`, {
                     method: 'POST',
                     body: formData,
                     mode:'cors'
