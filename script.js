@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selfieCapture=document.getElementById('captureSelfie')
     
     if (startCall) {
-        startCall.addEventListener('click', joinCall);
+        startCall.addEventListener('click', startCall);
     } else {
         console.warn('Join call button not found. Call cannot be joined manually.');
     }
