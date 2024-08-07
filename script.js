@@ -177,19 +177,19 @@ socket.on('ice-candidate', async (candidate) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const startCall = document.getElementById('startCall');
-    const endCall = document.getElementById('endCall') ;
+    const start = document.getElementById('startCall');
+    const end = document.getElementById('endCall') ;
     const capture = document.getElementById('capture');
     const selfieCapture=document.getElementById('captureSelfie')
     
-    if (startCall) {
-        startCall.addEventListener('click', startCall);
+    if (start) {
+        start.addEventListener('click', startCall);
     } else {
         console.warn('Join call button not found. Call cannot be joined manually.');
     }
     
-    if (endCall) {
-        endCall.addEventListener('click', endCall);
+    if (end) {
+        end.addEventListener('click', endCall);
     } else {
         console.warn('End call button not found. Call cannot be ended manually.');
     }
